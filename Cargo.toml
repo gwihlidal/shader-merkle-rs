@@ -1,0 +1,28 @@
+[package]
+name = "shader_merkle"
+version = "0.0.1"
+authors = ["Graham Wihlidal <graham@wihlidal.ca>"]
+description = "Utilities to parse includes in shader files and also generate a Merkle tree of identities."
+homepage = "https://github.com/gwihlidal/shader-merkle-rs"
+repository = "https://github.com/gwihlidal/shader-merkle-rs"
+readme = "README.md"
+keywords = ["rust", "shader", "merkle", "hashing", "pipeline", "data", "build"]
+license = "MIT"
+
+[dependencies]
+file = "1.1.2"
+regex = "1.0.4"
+num_cpus = "1.8.0"
+merkle_hash_tree = { git = "https://github.com/sergorl/merkle_hash_tree.git", branch = "real_fast" }
+normalize-line-endings = "0.2.2"
+lazy_static = "1.1.0"
+path_abs = "0.4.1"
+base58 = "0.1.0"
+sha2 = "0.7.1"
+filebuffer = "0.4.0"
+crossbeam-deque = "0.6.1"
+
+[lib]
+name = "shader_merkle"
+path = "src/lib.rs"
+test = false
