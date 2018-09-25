@@ -5,8 +5,8 @@ use std::path::Path;
 
 fn main() {
     let root_dir = Path::new("./tests/data");
-	let shader_file = root_dir.join("CodeGenHLSL/Samples/MiniEngine/ParticleSpawnCS.hlsl");
-	let shader_dir = shader_file.parent().unwrap();
+    let shader_file = root_dir.join("CodeGenHLSL/Samples/MiniEngine/ParticleSpawnCS.hlsl");
+    let shader_dir = shader_file.parent().unwrap();
 
     let mut result: Vec<parser::MatchResult> = Vec::new();
 

@@ -1,20 +1,20 @@
-use regex::Regex;
-use std::sync::{Arc, RwLock};
-use std::path::Path;
-use utilities;
 use paths::*;
+use regex::Regex;
+use std::path::Path;
+use std::sync::{Arc, RwLock};
+use utilities;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct MatchRange {
     pub start: usize,
-	pub end: usize,
+    pub end: usize,
 }
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct MatchResult {
-	pub include_path: String,
+    pub include_path: String,
     pub range: MatchRange,
-	pub relative_path: bool,
+    pub relative_path: bool,
 }
 
 #[derive(Default, Debug)]
@@ -56,7 +56,6 @@ impl IncludeParser {
         let state = self.state.clone();
 
         for include in &includes {
-
             let mut unique = true;
             {
                 let mut visited = state.visited.write().unwrap();
@@ -70,7 +69,12 @@ impl IncludeParser {
             if unique {
                 let mut inner_result = Vec::new();
                 let file_dir = Path::new(&include.include_path).parent().unwrap();
-                self.parse_file_recursive(&Path::new(&include.include_path), root_dir, file_dir, &mut inner_result);
+                self.parse_file_recursive(
+                    &Path::new(&include.include_path),
+                    root_dir,
+                    file_dir,
+                    &mut inner_result,
+                );
                 result.append(&mut inner_result);
             } else {
                 println!("Filtered out cycle: {:?}", include);
@@ -85,8 +89,9 @@ impl IncludeParser {
         //r#"(?m)(^*\#\s*include\s*<([^<>]+)>)|(^\s*\#\s*include\s*"([^"]+)")"#
 
         lazy_static! {
-            static ref ABSOLUTE_PATH_REGEX: Regex = Regex::new(r#"(?m)^*\#\s*include\s*<([^<>]+)>"#)
-                .expect("failed to compile absolute include path regex");
+            static ref ABSOLUTE_PATH_REGEX: Regex =
+                Regex::new(r#"(?m)^*\#\s*include\s*<([^<>]+)>"#)
+                    .expect("failed to compile absolute include path regex");
         }
 
         lazy_static! {
@@ -139,4 +144,3 @@ impl IncludeParser {
         results
     }
 }
-
