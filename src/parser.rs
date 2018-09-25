@@ -25,6 +25,7 @@ struct IncludeParserState {
 unsafe impl Send for IncludeParserState {}
 unsafe impl Sync for IncludeParserState {}
 
+#[derive(Default)]
 pub struct IncludeParser {
     state: Arc<IncludeParserState>,
 }
@@ -109,7 +110,7 @@ impl IncludeParser {
             let range_text = &input[range_start..range_end];
             let range_caps = ABSOLUTE_PATH_REGEX.captures(range_text).unwrap();
             let include_path = range_caps.get(1).map_or("", |m| m.as_str());
-            if include_path.len() > 0 {
+            if !include_path.is_empty() {
                 results.push(MatchResult {
                     include_path: include_path.to_owned(),
                     range: MatchRange {
@@ -129,7 +130,7 @@ impl IncludeParser {
             let range_text = range_text.trim().trim_matches('\n');
             let range_caps = RELATIVE_PATH_REGEX.captures(range_text).unwrap();
             let include_path = range_caps.get(1).map_or("", |m| m.as_str());
-            if include_path.len() > 0 {
+            if !include_path.is_empty() {
                 results.push(MatchResult {
                     include_path: include_path.to_owned(),
                     range: MatchRange {

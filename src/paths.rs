@@ -3,11 +3,11 @@ use std::path::Path;
 use utilities;
 
 pub fn path_resolve(
-    references: &Vec<MatchResult>,
+    references: &[MatchResult],
     root_dir: &Path,
     file_dir: &Path,
 ) -> Vec<MatchResult> {
-    let mut result = references.clone();
+    let mut result = references.to_owned();
     for reference in &mut result {
         let parent_path = if reference.relative_path {
             file_dir
@@ -29,23 +29,23 @@ pub fn path_resolve(
     result
 }
 
-pub fn path_dedup(references: &Vec<MatchResult>) -> Vec<MatchResult> {
+pub fn path_dedup(references: &[MatchResult]) -> Vec<MatchResult> {
     // Assume all paths have been expanded to their absolute form
-    let mut result = references.clone();
+    let mut result = references.to_owned();
     result.sort_by(|a, b| a.include_path.cmp(&b.include_path));
     result.dedup_by(|a, b| a.include_path.eq(&b.include_path));
     result
 }
 
-pub fn range_sort(references: &Vec<MatchResult>) -> Vec<MatchResult> {
-    let mut result = references.clone();
+pub fn range_sort(references: &[MatchResult]) -> Vec<MatchResult> {
+    let mut result = references.to_owned();
     result.sort_by(|a, b| a.range.start.cmp(&b.range.start));
     result
 }
 
-pub fn strip_base(root_dir: &Path, references: &Vec<MatchResult>) -> Vec<MatchResult> {
+pub fn strip_base(root_dir: &Path, references: &[MatchResult]) -> Vec<MatchResult> {
     let prefix = root_dir.canonicalize().unwrap();
-    let mut result = references.clone();
+    let mut result = references.to_owned();
     for reference in &mut result {
         let include_path = reference.include_path.to_owned();
         let include_path = Path::new(&include_path).strip_prefix(&prefix).unwrap();
